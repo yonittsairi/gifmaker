@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+    <link rel="stylesheet" href="lib/animate.css">
+    <link rel="stylesheet" href="css/main.css">
+
+
+</head>
+
+<body onload=init()>
+    <section class="gallery">
+        <img class=glass src="./icons/search-icon.png" alt="">
+        <input class="search" type="text" placeholder="search here" onchange="setSearch(this)"></input>
+        <div class="grid ">
+
+        </div>
+    </section>
+    <div class="container">
+        <header>
+            hola
+
+        </header>
+
+        <main>
+
+            <div class="canvas-container">
+                <canvas class=canva onclick="draw(event)" width="1100" height="700"></canvas>
+            </div>
+            <div class='menu'>
+                <form class="button-grid">
+                    <input class="write" type="text" placeholder="write here" onchange="setTxt(this.value)"></input>
+                    <select class="width" onchange="setWidth(this.value)" name="widths" id="width">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <select class="fontfamily" onchange="setFontFamily(this.value)" name="fonts" id="font">
+                        <option value="Arial">Arial</option>
+                        <option value="Tahoma">Tahoma</option>
+                        <option value="Impact">Impact</option>
+                    </select>
+                    <input class="strockcolor" onchange="setClr(this.value)" type="color">
+                    <input class="bcg" onchange="setBcg(this.value)" type="color">
+
+                    <img class="line" src="./icons/add.png" alt="" onclick="addLine()">
+                    <img class="move" src="./icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
+                        onclick="chooseLine()">
+                    <img class="clr" src="./icons/trash.png" alt="" onclick="clearLine()">
+                    <img class="alignLft" src="./icons/align-to-left.png" alt="" onclick="alignLft()">
+                    <img class="alignRgt" src="./icons/align-to-right.png" alt="" onclick="alignRgt()">
+                    <img class="alignCtr" src="./icons/center-text-alignment.png" alt="" onclick="alignCtr()">
+                    <img class="fontdec" src="./icons/decrease font - icon.png" alt="" onclick="decFontSize()">
+                    <img class="fontinc" src="./icons/increase font - icon.png" alt="" onclick="incFontSize()">
+                    <img class="txtstroke" src="./icons/text stroke.png" alt="" onclick="textStroke()">
+                    <img class="brrush" src="./icons/paint-board-and-brush.png" alt="">
+                </form>
+
+            </div>
+        </main>
+
+        <footer> <img src="./icons/linkedin-logo.png" alt="">
+            <img src="./icons/facebook-logo.png" alt="">
+            <img src="./icons/github-logo.png" alt=""></footer>
+    </div>
+</body>
+<script src=" js/controller.js"></script>
+<script src=" js/service.js"></script>
+<script src="lib/hammerjs.js"></script>
+
+</html>
