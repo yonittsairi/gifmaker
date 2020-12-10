@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/main.css">
 
 
+
 </head>
 
 <body onload=init()>
@@ -19,46 +20,92 @@
 
         </div>
     </section>
-    <div class="container">
-        <header>
-            hola
 
+
+    <!-- New Page -->
+    <div>
+        <header class="Nav-bar-bg ">
+            <img width="200" height="50" src="./img/logo.png" alt="">
+            <ul class="Text-Style-4">
+                <li><a onclick="displayGallery()">gallery</a></li>
+                <li>about</li>
+            </ul>
         </header>
 
         <main>
-
             <div class="canvas-container">
-                <canvas class=canva onclick="draw(event)" width="1100" height="700"></canvas>
+                <canvas class=canva width="1100" height="700" onclick="getLine(event)" onmousedown="toggleDraw(event)"
+                    onmouseup="toggleDraw(event)" onmousemove="rePosition(event)"></canvas>
             </div>
             <div class='menu'>
                 <form class="button-grid">
-                    <input class="write" type="text" placeholder="write here" onchange="setTxt(this.value)"></input>
-                    <select class="width" onchange="setWidth(this.value)" name="widths" id="width">
+                    <input class="Rounded-Rectangle-4" type="text" placeholder="write here"
+                        onchange="setTxt(this.value)"></input>
+                    <!-- <select class="width" onchange="setWidth(this.value)" name="widths" id="width">
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
-                    </select>
-                    <select class="fontfamily" onchange="setFontFamily(this.value)" name="fonts" id="font">
+                    </select> -->
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div class="change-line-btn">
+                        <img src="./icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
+                            onclick="chooseLine()">
+                    </div>
+                    <div class="add-line-btn">
+                        <img src="./icons/add.png" alt="" onclick="draw(event)">
+                    </div>
+                    <div class="trash-btn">
+                        <img src="./icons/trash.png" alt="" onclick="deleteLine()">
+                    </div>
+                    <div></div>
+                    <div class="increase-font-btn">
+                        <img src="./icons/increase font - icon.png" alt="" onclick="incFontSize()">
+                    </div>
+                    <div class="decrease-font-btn">
+                        <img src="./icons/decrease font - icon.png" alt="" onclick="decFontSize()">
+                    </div>
+                    <div class="align-left-btn">
+                        <img src="./icons/align-to-left.png" alt="" onclick="alignLft()">
+                    </div>
+                    <div class="align-center-btn">
+                        <img src="./icons/center-text-alignment.png" alt="" onclick="alignCtr()">
+                    </div>
+                    <div class="align-right-btn">
+                        <img src="./icons/align-to-right.png" alt="" onclick="alignRgt()">
+                    </div>
+                    <select class="font-input" onchange="setFontFamily(this.value)" name="fonts" id="font">
+                        <option value="Impact"></option>
                         <option value="Arial">Arial</option>
                         <option value="Tahoma">Tahoma</option>
                         <option value="Impact">Impact</option>
                     </select>
-                    <input class="strockcolor" onchange="setClr(this.value)" type="color">
-                    <input class="bcg" onchange="setBcg(this.value)" type="color">
+                    <div></div>
+                    <div></div>
 
-                    <img class="line" src="./icons/add.png" alt="" onclick="addLine()">
-                    <img class="move" src="./icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
-                        onclick="chooseLine()">
-                    <img class="clr" src="./icons/trash.png" alt="" onclick="clearLine()">
-                    <img class="alignLft" src="./icons/align-to-left.png" alt="" onclick="alignLft()">
-                    <img class="alignRgt" src="./icons/align-to-right.png" alt="" onclick="alignRgt()">
-                    <img class="alignCtr" src="./icons/center-text-alignment.png" alt="" onclick="alignCtr()">
-                    <img class="fontdec" src="./icons/decrease font - icon.png" alt="" onclick="decFontSize()">
-                    <img class="fontinc" src="./icons/increase font - icon.png" alt="" onclick="incFontSize()">
-                    <img class="txtstroke" src="./icons/text stroke.png" alt="" onclick="textStroke()">
-                    <img class="brrush" src="./icons/paint-board-and-brush.png" alt="">
+                    <div class="text-shadow-btn">
+                        <input class="text-shadow-btn hide" onchange="setClr(this.value)" type="color">
+                        <img src="./icons/text stroke.png" alt="">
+                    </div>
+
+                    <div class="color-btn">
+                        <input class="color-btn hide" onchange="setBcg(this.value)" type="color">
+                        <img src="./icons/paint-board-and-brush.png" alt="">
+                    </div>
+
+                    <div></div>
+                    <div></div>
+
+
+
+
+
+
                 </form>
 
             </div>

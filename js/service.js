@@ -1,6 +1,7 @@
 'use strict'
-var gFontSize = 60;
-var gFontFamily = 'Impact';
+
+var gMeme = {}
+
 
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
 var gImgs = [
@@ -24,25 +25,57 @@ var gImgs = [
     { id: 10, url: '18.jpg', keywords: ['kids', 'movie'] },
 
 ];
-var gMeme = {
-    selectedImgId: 5,
-    selectedLineIdx: 0,
-    lines: [{ txt: 'I never eat Falafel', size: 20, align: 'left', color: 'red' }]
+
+
+
+function createLine(x, y, width, rectX, rectY) {
+    if (gMeme.lines === 0) {
+        gMeme.lines = []
+        gMeme.lineCount = 0
+    }
+    var line = {
+        id: _makeId(),
+        txt: gTxt,
+        size: gFontSize,
+        align: gAlign,
+        color: gBcg,
+        stroke: gStrokeColor,
+        rectWidth: width,
+        fontFamily: gFontFamily,
+        x,
+        y,
+        rectX: rectX,
+        rectY: rectY,
+    }
+    gMeme.lines.push(line)
+    gMeme.lineCount++
 }
 
-
-function createLine(txt) {
-    console.log('0');
-    gMeme.lines[0].txt = txt
+function changeLine(idx) {
+    var line = gMeme.lines[idx]
+    line.txt = gTxt
 }
 
-
+function _makeId(length = 5) {
+    var txt = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < length; i++) {
+        txt += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return txt;
+}
 
 function drawImg() {
     var img = new Image();
     img.src = './img/' + gCurrImg
-    img.onload = () => {
-        gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height) //img,x,y,xend,yend
+    if (img.complete) {
+        gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
+
+    } else {
+        img.onload = function () {
+            gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
+
+        };
     }
 }
 
@@ -51,7 +84,7 @@ function createGallery() {
     var elGrid = document.querySelector('.grid')
 
     var strHtmls = gImgs.map(img =>
-        `<img src=./img/${img.url} id=${img.id} onclick="displayCanvas('${img.url}')">`
+        `<img src=./img/${img.url} id=${img.id} onclick="displayCanvas('${img.url}','${img.id}')">`
     )
     elGrid.innerHTML = strHtmls.join('')
 }
@@ -61,3 +94,14 @@ function findMatch(word) {
     console.log('to come');
 
 }
+
+function saveMeme(id) {
+    var meme = {
+        selectedImgId: id,
+        selectedLineIdx: 0,
+        lines: 0,
+    }
+    gMeme = meme
+    console.log(gMeme);
+}
+
