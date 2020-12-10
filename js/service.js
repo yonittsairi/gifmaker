@@ -48,7 +48,7 @@ function createLine(x, y, width, rectX, rectY) {
         rectY: rectY,
     }
     gMeme.lines.push(line)
-    gMeme.lineCount++
+    gMeme.lineCount = (gMeme.lines).length
 }
 
 function changeLine(idx) {

@@ -12,11 +12,12 @@ var gActive = false
 var gRect;
 var gFontSize = 60;
 var gFontFamily = 'Impact';
-var gAlign = 'center'
-var gClick = 0
-var gRectExist = false
+var gAlign = 'center';
+var gClick = 0;
+var gRectExist = false;
 var gClickedLine;
-var gDrawing = false
+var gDrawing = false;
+const KEY = 'memes';
 
 
 
@@ -50,6 +51,7 @@ function displayGallery() {
 }
 
 function findIdxById(gClickedLine) {
+    if (gdraw === -1) return
     var id = gClickedLine.id
     var lines = gMeme.lines
     var idx = lines.findIndex(line => line.id === id)
@@ -101,6 +103,7 @@ function deleteLine() {
 
 //toFix 
 function drawRectSelected(gClickedLine) {
+    if (!gClickedLine) return
     var x = gClickedLine.rectX
     var y = gClickedLine.rectY
     gtxtWidth = gClickedLine.rectWidth
@@ -130,14 +133,17 @@ function drawText(text, x, y) {
     gCtx.textAlign = gAlign
     gCtx.fillStyle = gBcg
     gCtx.strokeStyle = gStrokeColor
-    gCtx.fillText(text, x, y)
+    gCtx.shadowColor = gStrokeColor
+    gCtx.shadowBlur = 15;
     gCtx.strokeText(text, x, y)
+    gCtx.fillText(text, x, y)
     gtxtWidth = gCtx.measureText(text).width
 
 }
 function drawRect(x, y) {
     gCtx.beginPath()
     gCtx.strokeStyle = 'black'
+    gCtx.shadowBlur = 0;
     gCtx.rect(x - 10, y - 10, gtxtWidth + 30, gFontSize + 30) // x,y,widht,height
     gCtx.stroke()
 }
@@ -231,23 +237,26 @@ function chooseLine() {
 }
 
 function drawAllTxt() {
-    gActive = true
-    clearCanvas()
-    drawImg(gCurrImg)
-    var lines = gMeme.lines
-    lines.forEach(line => {
-        gTxt = line.txt
-        gFontFamily = line.fontFamily
-        gBcg = line.color
-        gStrokeColor = line.stroke
-        gFontSize = line.size
-        gAlign = line.align
-        gtxtWidth = line.width
-        var x = line.x
-        var y = line.y
-        drawText(gTxt, x, y)
+    if (gMeme.lines) {
+        gActive = true
+        clearCanvas()
+        drawImg(gCurrImg)
+        var lines = gMeme.lines
+        lines.forEach(line => {
+            gTxt = line.txt
+            gFontFamily = line.fontFamily
+            gBcg = line.color
+            gStrokeColor = line.stroke
+            gFontSize = line.size
+            gAlign = line.align
+            gtxtWidth = line.width
+            var x = line.x
+            var y = line.y
+            drawText(gTxt, x, y)
+        }
 
-    });
+        )
+    };
     gActive = false
 }
 
@@ -309,5 +318,13 @@ function downloadImg(elLink) {
         elLink.href = imgContent
     }
 
+}
+
+function saveMemes() {
+    var memes = loadFromStorage(KEY)
+    if (!memes || memes.length === 0) memes = gMeme
+    else memes.push(gMeme)
+    saveToStorage(KEY, memes)
+    console.log(localStorage);
 }
 

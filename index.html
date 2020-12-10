@@ -19,6 +19,7 @@
             <ul class="Text-Style-4">
                 <li><a onclick="displayGallery()">gallery</a></li>
                 <li>about</li>
+                <li onclick="displayGallery()">memes</li>
             </ul>
         </header>
         <div class="search-bar flex main-layout">
@@ -59,14 +60,7 @@
             <div class='menu'>
                 <form class="button-grid">
                     <input class="Rounded-Rectangle-4 clear" type="text" placeholder="write here"
-                        onchange="setTxt(this.value)"></input>
-                    <!-- <select class="width" onchange="setWidth(this.value)" name="widths" id="width">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select> -->
+                        onchange="setTxt(this.value)" onclick="drawAllTxt()"></input>
                     <div class="change-line-btn">
                         <img src="./icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
                             onclick="chooseLine()">
@@ -92,11 +86,12 @@
                     <div class="align-right-btn">
                         <img src="./icons/align-to-right.png" alt="" onclick="alignRgt()">
                     </div>
-                    <select class="font-input" onchange="setFontFamily(this.value)" name="fonts" id="font">
-                        <option value="Impact"></option>
+                    <select class="font-input" onchange="setFontFamily(this.value)" placeholder="write here"
+                        name="fonts" id="font">
+                        <option value="Impact">Impact</option>
                         <option value="Arial">Arial</option>
                         <option value="Tahoma">Tahoma</option>
-                        <option value="Impact">Impact</option>
+
                     </select>
                     <div class="text-shadow-btn">
                         <input class="text-shadow-btn hide" onchange="setClr(this.value)" type="color">
@@ -108,6 +103,7 @@
                         <img src="./icons/paint-board-and-brush.png" alt="">
                     </div>
                     <a class="share btn">Share</a>
+                    <a class="save btn" onclick="saveMemes()">Save</a>
                     <a href=# class="download btn" onclick="downloadImg(this)" download="mygif.jpg">Download</a>
                 </form>
 
@@ -122,6 +118,7 @@
     </div>
 </body>
 <script src=" js/controller.js"></script>
+<script src=" js/storage-service.js"></script>
 <script src=" js/service.js"></script>
 <script src="lib/hammerjs.js"></script>
 
