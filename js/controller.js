@@ -26,6 +26,8 @@ function init() {
     createGallery()
     var elContainer = document.querySelector('.canvas-container');
     gCanvas = document.querySelector('canvas')
+    var elGif = document.querySelector('.gifpage')
+    elGif.style.visibility = "hidden"
     gCanvas.width = elContainer.offsetWidth
     gCanvas.height = elContainer.offsetHeight
     gCtx = gCanvas.getContext('2d')
@@ -42,6 +44,9 @@ function displayGallery() {
     var elGrid = document.querySelector('.grid')
     elgallery.style.display = 'block'
     elGrid.style.display = 'grid'
+    var elGif = document.querySelector('.gifpage')
+    elGif.style.visibility = "hidden"
+
 }
 
 function findIdxById(gClickedLine) {
@@ -79,11 +84,19 @@ function getLine(ev) {
 
 }
 function deleteLine() {
+    if (gdraw === -1) return
+    if (gdraw === 0) {
+        clearCanvas()
+        drawImg()
+        gdraw = -1
+    }
     var idx = findIdxById(gClickedLine)
     var lines = gMeme.lines
     lines.splice(idx, 1)
+    gdraw--
     drawAllTxt()
 }
+
 
 
 //toFix 
@@ -131,6 +144,7 @@ function drawRect(x, y) {
 
 
 function draw() {
+    clearInput()
     if (!gTxt) return
     if (gTxt.length > 20) return alert('print only 15 letters')
     gActive = true
@@ -171,8 +185,14 @@ function clearCanvas() {
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
 
 }
+function clearInput() {
+    var elInput = document.querySelector('.clear')
+    elInput.value = ''
+}
 
 function displayCanvas(el, id) {
+    var elGif = document.querySelector('.gifpage')
+    elGif.style.visibility = "visible"
     getSrc(el)
     drawImg(gCurrImg)
     saveMeme(id)
@@ -192,19 +212,26 @@ function setSearch(el) {
 }
 
 function chooseLine() {
-    if (gClick === gMeme.lines.length) gClick = 0
-    gClickedLine = gMeme.lines[gClick]
-    let x = gMeme.lines[gClick].x
-    let y = gMeme.lines[gClick].y
-    gFontSize = gMeme.lines[gClick].size
-    gtxtWidth = gMeme.lines[gClick].rectWidth
-    clearCanvas()
-    drawAllTxt()
-    drawRect(x - (gtxtWidth / 2), y - gFontSize)
-    gClick++
+    if (gClick > gMeme.lines.length - 1) {
+        gClick = 0
+        clearCanvas()
+        drawAllTxt()
+    }
+    else {
+        gClickedLine = gMeme.lines[gClick]
+        let x = gMeme.lines[gClick].x
+        let y = gMeme.lines[gClick].y
+        gFontSize = gMeme.lines[gClick].size
+        gtxtWidth = gMeme.lines[gClick].rectWidth
+        clearCanvas()
+        drawAllTxt()
+        drawRect(x - (gtxtWidth / 2), y - gFontSize)
+        gClick++
+    }
 }
 
 function drawAllTxt() {
+    gActive = true
     clearCanvas()
     drawImg(gCurrImg)
     var lines = gMeme.lines
@@ -221,6 +248,7 @@ function drawAllTxt() {
         drawText(gTxt, x, y)
 
     });
+    gActive = false
 }
 
 // function resizeCanvas() {
@@ -235,6 +263,10 @@ function drawAllTxt() {
 
 ///STYLE FUNC
 function setTxt(txt) {
+    if (gdraw >= 0) {
+        clearCanvas()
+        drawAllTxt()
+    }
     gTxt = txt
 
 }
@@ -267,5 +299,15 @@ function alignCtr() { gAlign = 'center' }
 function setFontFamily(value) {
     gFontFamily = value
 }
-//TODO
-function textStroke() { }
+
+
+function downloadImg(elLink) {
+    drawAllTxt()
+    if (!gActive) {
+        var canvas = document.querySelector('.canva')
+        var imgContent = canvas.toDataURL("image/jpg", 1.0)
+        elLink.href = imgContent
+    }
+
+}
+

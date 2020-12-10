@@ -13,18 +13,37 @@
 </head>
 
 <body onload=init()>
-    <section class="gallery">
-        <img class=glass src="./icons/search-icon.png" alt="">
-        <input class="search" type="text" placeholder="search here" onchange="setSearch(this)"></input>
-        <div class="grid ">
-
+    <section class="gallery main-layout">
+        <header class="Nav-bar-bg main-layout">
+            <img width="200" height="50" src="./img/logo.png" alt="">
+            <ul class="Text-Style-4">
+                <li><a onclick="displayGallery()">gallery</a></li>
+                <li>about</li>
+            </ul>
+        </header>
+        <div class="search-bar flex main-layout">
+            <div class="search-item flex">
+                <input class="search" type="text" placeholder="search here" onchange="setSearch(this)"></input>
+                <img class="glass" src="./icons/search-icon.png" alt="">
+            </div>
+            <div> search</div>
         </div>
+        <div class="gallery-container main-layout">
+            <div class="grid">
+            </div>
+        </div>
+        <footer class="main-layout">
+            <img src="./icons/linkedin-logo.png" alt="">
+            <img src="./icons/facebook-logo.png" alt="">
+            <img src="./icons/github-logo.png" alt="">
+        </footer>
+
     </section>
 
 
     <!-- New Page -->
-    <div>
-        <header class="Nav-bar-bg ">
+    <div class="main-layout gifpage">
+        <header class="Nav-bar-bg main-layout">
             <img width="200" height="50" src="./img/logo.png" alt="">
             <ul class="Text-Style-4">
                 <li><a onclick="displayGallery()">gallery</a></li>
@@ -32,14 +51,14 @@
             </ul>
         </header>
 
-        <main>
+        <main class=main-layout>
             <div class="canvas-container">
                 <canvas class=canva width="1100" height="700" onclick="getLine(event)" onmousedown="toggleDraw(event)"
                     onmouseup="toggleDraw(event)" onmousemove="rePosition(event)"></canvas>
             </div>
             <div class='menu'>
                 <form class="button-grid">
-                    <input class="Rounded-Rectangle-4" type="text" placeholder="write here"
+                    <input class="Rounded-Rectangle-4 clear" type="text" placeholder="write here"
                         onchange="setTxt(this.value)"></input>
                     <!-- <select class="width" onchange="setWidth(this.value)" name="widths" id="width">
                         <option value="0">0</option>
@@ -48,11 +67,6 @@
                         <option value="3">3</option>
                         <option value="4">4</option>
                     </select> -->
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
                     <div class="change-line-btn">
                         <img src="./icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
                             onclick="chooseLine()">
@@ -63,7 +77,6 @@
                     <div class="trash-btn">
                         <img src="./icons/trash.png" alt="" onclick="deleteLine()">
                     </div>
-                    <div></div>
                     <div class="increase-font-btn">
                         <img src="./icons/increase font - icon.png" alt="" onclick="incFontSize()">
                     </div>
@@ -85,9 +98,6 @@
                         <option value="Tahoma">Tahoma</option>
                         <option value="Impact">Impact</option>
                     </select>
-                    <div></div>
-                    <div></div>
-
                     <div class="text-shadow-btn">
                         <input class="text-shadow-btn hide" onchange="setClr(this.value)" type="color">
                         <img src="./icons/text stroke.png" alt="">
@@ -97,23 +107,18 @@
                         <input class="color-btn hide" onchange="setBcg(this.value)" type="color">
                         <img src="./icons/paint-board-and-brush.png" alt="">
                     </div>
-
-                    <div></div>
-                    <div></div>
-
-
-
-
-
-
+                    <a class="share btn">Share</a>
+                    <a href=# class="download btn" onclick="downloadImg(this)" download="mygif.jpg">Download</a>
                 </form>
 
             </div>
         </main>
 
-        <footer> <img src="./icons/linkedin-logo.png" alt="">
+        <footer class="main-layout">
+            <img src="./icons/linkedin-logo.png" alt="">
             <img src="./icons/facebook-logo.png" alt="">
-            <img src="./icons/github-logo.png" alt=""></footer>
+            <img src="./icons/github-logo.png" alt="">
+        </footer>
     </div>
 </body>
 <script src=" js/controller.js"></script>
