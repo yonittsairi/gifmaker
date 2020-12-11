@@ -3,7 +3,6 @@ var gCanvas;
 var gCtx;
 var gBcg = '#fff';
 var gStrokeColor = 'black';
-var gWidth;
 var gdraw = -1
 var gTxt;
 var gCurrImg;
@@ -31,15 +30,30 @@ function init() {
     elGif.style.visibility = "hidden"
     gCanvas.width = elContainer.offsetWidth
     gCanvas.height = elContainer.offsetHeight
+    clearInput()
     gCtx = gCanvas.getContext('2d')
 }
 
 function toggleDraw(ev) {
+    console.log('toggel');
     gDrawing = gDrawing ? false : true;
-    getLine(ev)
     drawAllTxt()
 }
 
+function displayMemeGallery() {
+    var elgallery = document.querySelector('.gallery meme')
+    var elGrid = document.querySelector('.grid meme')
+    elgallery.style.display = 'block'
+    elGrid.style.display = 'grid'
+    var elGif = document.querySelector('.gifpage')
+    elGif.style.visibility = "hidden"
+    var elContainer = document.querySelector('.canvas-container');
+    gCanvas = document.querySelector('canvas')
+    var elGif = document.querySelector('.gifpage')
+    elGif.style.visibility = "hidden"
+
+
+}
 function displayGallery() {
     var elgallery = document.querySelector('.gallery')
     var elGrid = document.querySelector('.grid')
@@ -50,41 +64,59 @@ function displayGallery() {
 
 }
 
-function findIdxById(gClickedLine) {
-    if (gdraw === -1) return
-    var id = gClickedLine.id
+function findIdxById(id) {
+    var idx = 0
     var lines = gMeme.lines
-    var idx = lines.findIndex(line => line.id === id)
+    if (gClickedLine && lines.length !== 0) {
+        var currId = id
+        idx = lines.findIndex(line => line.id === currId)
+    }
     return idx
 }
 
+
+
 function rePosition(ev) {
+    if (!gClickedLine) return
+    if (!gDrawing) return
     if (gDrawing && gClickedLine) {
+        var idx = gMeme.selectedLineIdx
         var { offsetX, offsetY } = ev;
         gClickedLine.x = offsetX
         gClickedLine.y = offsetY
         var lines = gMeme.lines
+        lines.splice(idx, 1)
         lines.push(gClickedLine)
-        toggleDraw()
+        toggleDraw(ev)
+        drawAllTxt()
     }
     else return
 }
 
 function getLine(ev) {
+    console.log('gettingline');
     var { offsetX, offsetY } = ev;
     if (gdraw === -1) return
     var lines = gMeme.lines
+    gClickedLine = 0
     gClickedLine = lines.find(line => {
         return offsetX >= line.x && offsetX <= line.x + line.rectWidth
             && offsetY <= line.y && offsetY >= (line.y - line.size)
 
     })
-
+    var id = gClickedLine.id
+    var idx = findIdxById(id)
+    console.log(idx);
+    gMeme.selectedLineIdx = idx
+    console.log(gMeme, id);
     drawRectSelected(gClickedLine)
-    var idx = findIdxById(gClickedLine)
-    var lines = gMeme.lines
 
+    if (gClickedLine) {
+        var elInput = document.querySelector('.write')
+        elInput.value = gClickedLine.txt
+    }
 }
+
 function deleteLine() {
     if (gdraw === -1) return
     if (gdraw === 0) {
@@ -115,12 +147,18 @@ function drawRectSelected(gClickedLine) {
     }
 }
 
-function updateInput(gClickedLine) {
+function updateInput() {
     var elInput = document.querySelector('.write')
-    elInput.value = gClickedLine.txt
-    var idx = findIdxById(gClickedLine)
-    changeLine(idx)
-    drawAllTxt()
+    if (!gClickedLine) return
+    else {
+        elInput.value = gClickedLine.txt
+        var idx = gMeme.selectedLineIdx
+        gMeme.line[idx].width =
+            drawText()
+        changeLine(idx)
+        drawAllTxt()
+
+    }
 }
 
 
@@ -144,7 +182,8 @@ function drawRect(x, y) {
     gCtx.beginPath()
     gCtx.strokeStyle = 'black'
     gCtx.shadowBlur = 0;
-    gCtx.rect(x - 10, y - 10, gtxtWidth + 30, gFontSize + 30) // x,y,widht,height
+    if (gdraw > 0) gtxtWidth = gClickedLine.rectWidth
+    gCtx.rect(x - 10, y - 10, gtxtWidth * 1.268, gFontSize * 1.286) // x,y,widht,height
     gCtx.stroke()
 }
 
@@ -229,6 +268,7 @@ function chooseLine() {
         let y = gMeme.lines[gClick].y
         gFontSize = gMeme.lines[gClick].size
         gtxtWidth = gMeme.lines[gClick].rectWidth
+        gMeme.selectedLineIdx = gClick + 1
         clearCanvas()
         drawAllTxt()
         drawRect(x - (gtxtWidth / 2), y - gFontSize)
@@ -249,7 +289,7 @@ function drawAllTxt() {
             gStrokeColor = line.stroke
             gFontSize = line.size
             gAlign = line.align
-            gtxtWidth = line.width
+            gtxtWidth = line.rectWidth
             var x = line.x
             var y = line.y
             drawText(gTxt, x, y)
@@ -280,9 +320,7 @@ function setTxt(txt) {
 
 }
 
-function setWidth(width) {
-    gWidth = width
-}
+
 function setFontFamily(value) {
     gFontFamily = value
 }
@@ -328,3 +366,4 @@ function saveMemes() {
     console.log(localStorage);
 }
 
+// scale ctx.scale(2, 2);

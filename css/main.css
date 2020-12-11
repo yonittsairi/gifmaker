@@ -174,9 +174,11 @@ li {
     cursor: pointer;
 }
 
-li:last-of-type {
+li:nth-of-type(2) {
     border-left: 1.5px solid #8a8a8a;
+    border-right: 1.5px solid #8a8a8a;
     padding-left: 6px;
+    padding-right: 6px;
 }
 
 li:hover {

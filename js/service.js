@@ -1,6 +1,7 @@
 'use strict'
 
 var gMeme = {}
+var gMemesData;
 
 
 var gKeywords = { 'happy': 12, 'funny puk': 1 }
@@ -49,11 +50,14 @@ function createLine(x, y, width, rectX, rectY) {
     }
     gMeme.lines.push(line)
     gMeme.lineCount = (gMeme.lines).length
+    console.log(gMeme);
 }
 
 function changeLine(idx) {
+    if (idx === -1 || gdraw === -1) return
     var line = gMeme.lines[idx]
     line.txt = gTxt
+    console.log(line);
 }
 
 function _makeId(length = 5) {
@@ -105,3 +109,11 @@ function saveMeme(id) {
     console.log(gMeme);
 }
 
+
+// if i have ty=ime use this to draw Meme Gallery
+function copy() {
+    if (!gMemesData) gMemesData = []
+    var imgData = gCtx.getImageData(0, 0, gCanvas.width, gCanvas.height);
+    gMemesData.push(imgData)
+    // gCtx.putImageData(imgData, 0, 0);
+}

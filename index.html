@@ -19,7 +19,7 @@
             <ul class="Text-Style-4">
                 <li><a onclick="displayGallery()">gallery</a></li>
                 <li>about</li>
-                <li onclick="displayGallery()">memes</li>
+                <!-- <li onclick="displayGallery()">memes</li> -->
             </ul>
         </header>
         <div class="search-bar flex main-layout">
@@ -54,13 +54,13 @@
 
         <main class=main-layout>
             <div class="canvas-container">
-                <canvas class=canva width="1100" height="700" onclick="getLine(event)" onmousedown="toggleDraw(event)"
+                <canvas class=canva width="1100" height="700" onmousedown="getLine(event);toggleDraw(event)"
                     onmouseup="toggleDraw(event)" onmousemove="rePosition(event)"></canvas>
             </div>
             <div class='menu'>
                 <form class="button-grid">
-                    <input class="Rounded-Rectangle-4 clear" type="text" placeholder="write here"
-                        onchange="setTxt(this.value)" onclick="drawAllTxt()"></input>
+                    <input class="Rounded-Rectangle-4 clear write" type="text" placeholder="write here"
+                        oninput="setTxt(this.value);updateInput()"></input>
                     <div class="change-line-btn">
                         <img src="./icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
                             onclick="chooseLine()">
@@ -102,7 +102,7 @@
                         <input class="color-btn hide" onchange="setBcg(this.value)" type="color">
                         <img src="./icons/paint-board-and-brush.png" alt="">
                     </div>
-                    <a class="share btn">Share</a>
+                    <a class="share btn" onclick="copy()">Share</a>
                     <a class="save btn" onclick="saveMemes()">Save</a>
                     <a href=# class="download btn" onclick="downloadImg(this)" download="mygif.jpg">Download</a>
                 </form>
