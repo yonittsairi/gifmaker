@@ -24,10 +24,11 @@ const KEY = 'memes';
 function init() {
     gdraw = -1
     createGallery()
+    displayGallery()
     var elContainer = document.querySelector('.canvas-container');
     gCanvas = document.querySelector('canvas')
-    var elGif = document.querySelector('.gifpage')
-    elGif.style.visibility = "hidden"
+    // var elGif = document.querySelector('.gifpage')
+    // elGif.style.visibility = "hidden"
     gCanvas.width = elContainer.offsetWidth
     gCanvas.height = elContainer.offsetHeight
     clearInput()
@@ -40,27 +41,34 @@ function toggleDraw(ev) {
     drawAllTxt()
 }
 
-function displayMemeGallery() {
-    var elgallery = document.querySelector('.gallery meme')
-    var elGrid = document.querySelector('.grid meme')
-    elgallery.style.display = 'block'
-    elGrid.style.display = 'grid'
-    var elGif = document.querySelector('.gifpage')
-    elGif.style.visibility = "hidden"
-    var elContainer = document.querySelector('.canvas-container');
-    gCanvas = document.querySelector('canvas')
-    var elGif = document.querySelector('.gifpage')
-    elGif.style.visibility = "hidden"
+// function displayMemeGallery() {
+//     var elgallery = document.querySelector('.gallery meme')
+//     var elGrid = document.querySelector('.grid meme')
+//     elgallery.style.display = 'block'
+//     elGrid.style.display = 'grid'
+//     var elGif = document.querySelector('.gifpage')
+//     elGif.style.visibility = "hidden"
+//     var elContainer = document.querySelector('.canvas-container');
+//     gCanvas = document.querySelector('canvas')
+//     var elGif = document.querySelector('.gifpage')
+//     elGif.style.visibility = "hidden"
 
 
-}
+// }
 function displayGallery() {
     var elgallery = document.querySelector('.gallery')
+    var elgalleryCon = document.querySelector('.gallery-container')
     var elGrid = document.querySelector('.grid')
+    elgalleryCon.style.display = 'flex'
     elgallery.style.display = 'block'
     elGrid.style.display = 'grid'
-    var elGif = document.querySelector('.gifpage')
-    elGif.style.visibility = "hidden"
+    elgallery.style.opacity = '1'
+    var elGif = document.querySelector('.paint')
+    var elMain2 = document.querySelector('.main2')
+    elGif.style.visibility = 'hidden'
+    elMain2.style.visibility = 'hidden'
+    elMain2.classList.add('height')
+    // elGif.style.display = 'none'
 
 }
 
@@ -74,7 +82,28 @@ function findIdxById(id) {
     return idx
 }
 
+function displayCanvas(el, id) {
+    var elGif = document.querySelector('.gifpage')
+    var elGif = document.querySelector('.gifpage')
+    elGif.style.visibility = "visible"
+    getSrc(el)
+    drawImg(gCurrImg)
+    saveMeme(id)
+    var elgallery = document.querySelector('.gallery')
+    var elGrid = document.querySelector('.grid')
+    elgallery.style.opacity = '0'
+    elGrid.style.display = 'none'
+    var elGif = document.querySelector('.paint')
+    elGif.style.visibility = 'visible'
+    var elMain2 = document.querySelector('.main2')
+    elMain2.style.visibility = 'visible'
+    elMain2.classList.remove('height')
+    var elgalleryCon = document.querySelector('.gallery-container')
+    elgalleryCon.style.display = 'none'
+    // elGif.style.display = 'block'
+    // elGif.style.display = 'flex'
 
+}
 
 function rePosition(ev) {
     if (!gClickedLine) return
@@ -82,6 +111,8 @@ function rePosition(ev) {
     if (gDrawing && gClickedLine) {
         var idx = gMeme.selectedLineIdx
         var { offsetX, offsetY } = ev;
+        drawRect(gClickedLine.x, gClickedLine.y)
+        if (offsetX < gtxtWidth || offsetX > gCanvas.width - gtxtWidth || offsetY < gFontSize || offsetY > gCanvas.height - gFontSize) return
         gClickedLine.x = offsetX
         gClickedLine.y = offsetY
         var lines = gMeme.lines
@@ -89,26 +120,30 @@ function rePosition(ev) {
         lines.push(gClickedLine)
         toggleDraw(ev)
         drawAllTxt()
+
+        gClickedLine = 0
     }
     else return
 }
 
 function getLine(ev) {
-    console.log('gettingline');
+    debugger
     var { offsetX, offsetY } = ev;
+    console.log(offsetX, offsetY);
     if (gdraw === -1) return
     var lines = gMeme.lines
-    gClickedLine = 0
+
     gClickedLine = lines.find(line => {
-        return offsetX >= line.x && offsetX <= line.x + line.rectWidth
-            && offsetY <= line.y && offsetY >= (line.y - line.size)
+        return offsetX >= line.x && offsetX <= (line.x * 1.286 + line.rectWidth)
+            && offsetY >= (line.y - line.size) && offsetY <= (line.y + line.size)
 
     })
-    var id = gClickedLine.id
-    var idx = findIdxById(id)
+    console.log(gClickedLine);
+    var currId = gClickedLine.id
+    var idx = findIdxById(currId)
     console.log(idx);
     gMeme.selectedLineIdx = idx
-    console.log(gMeme, id);
+    console.log(gMeme, currId);
     drawRectSelected(gClickedLine)
 
     if (gClickedLine) {
@@ -153,8 +188,7 @@ function updateInput() {
     else {
         elInput.value = gClickedLine.txt
         var idx = gMeme.selectedLineIdx
-        gMeme.line[idx].width =
-            drawText()
+        drawText()
         changeLine(idx)
         drawAllTxt()
 
@@ -183,7 +217,7 @@ function drawRect(x, y) {
     gCtx.strokeStyle = 'black'
     gCtx.shadowBlur = 0;
     if (gdraw > 0) gtxtWidth = gClickedLine.rectWidth
-    gCtx.rect(x - 10, y - 10, gtxtWidth * 1.268, gFontSize * 1.286) // x,y,widht,height
+    gCtx.rect(x - 10, y - 10, gtxtWidth + 15, gFontSize * 1.286) // x,y,widht,height
     gCtx.stroke()
 }
 
@@ -235,17 +269,7 @@ function clearInput() {
     elInput.value = ''
 }
 
-function displayCanvas(el, id) {
-    var elGif = document.querySelector('.gifpage')
-    elGif.style.visibility = "visible"
-    getSrc(el)
-    drawImg(gCurrImg)
-    saveMeme(id)
-    var elgallery = document.querySelector('.gallery')
-    var elGrid = document.querySelector('.grid')
-    elgallery.style.display = 'none'
-    elGrid.style.display = 'none'
-}
+
 function getSrc(el) {
     gCurrImg = el
 }
@@ -300,13 +324,13 @@ function drawAllTxt() {
     gActive = false
 }
 
-// function resizeCanvas() {
-//     var elContainer = document.querySelector('.canvas-container');
-//     // Note: changing the canvas dimension this way clears the canvas
-//     console.log(elContainer.offsetWidth)
-//     gCanvas.width = elContainer.offsetWidth
-//     gCanvas.height = elContainer.offsetHeight
-// }
+function resizeCanvas() {
+    var elContainer = document.querySelector('.canvas-container');
+    // Note: changing the canvas dimension this way clears the canvas
+    console.log(elContainer.offsetWidth)
+    gCanvas.width = elContainer.offsetWidth
+    gCanvas.height = elContainer.offsetHeight
+}
 
 
 

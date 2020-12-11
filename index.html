@@ -13,52 +13,39 @@
 </head>
 
 <body onload=init()>
-    <section class="gallery main-layout">
-        <header class="Nav-bar-bg main-layout">
-            <img width="200" height="50" src="./img/logo.png" alt="">
-            <ul class="Text-Style-4">
-                <li><a onclick="displayGallery()">gallery</a></li>
-                <li>about</li>
-                <!-- <li onclick="displayGallery()">memes</li> -->
-            </ul>
-        </header>
-        <div class="search-bar flex main-layout">
-            <div class="search-item flex">
-                <input class="search" type="text" placeholder="search here" onchange="setSearch(this)"></input>
-                <img class="glass" src="./icons/search-icon.png" alt="">
-            </div>
-            <div> search</div>
+    <header class="Nav-bar-bg main-layout">
+        <img width="200" height="50" src="./img/logo.png" alt="">
+        <ul class="Text-Style-4">
+            <li><a onclick="init()">gallery</a></li>
+            <li><a>about</a></li>
+            <!-- <li onclick="displayGallery()">memes</li> -->
+        </ul>
+    </header>
+    <div class="search-bar flex main-layout">
+        <div class="search-item flex">
+            <input class="search" type="text" placeholder="search here" onchange="setSearch(this)"></input>
+            <img class="glass" src="./icons/search-icon.png" alt="">
         </div>
-        <div class="gallery-container main-layout">
-            <div class="grid">
+        <div>search</div>
+    </div>
+
+    <main class="main-layout gifpage">
+        <section class="gallery main-layout flex">
+
+            <div class="gallery-container main-layout">
+                <div class="grid center">
+                </div>
             </div>
-        </div>
-        <footer class="main-layout">
-            <img src="./icons/linkedin-logo.png" alt="">
-            <img src="./icons/facebook-logo.png" alt="">
-            <img src="./icons/github-logo.png" alt="">
-        </footer>
-
-    </section>
-
-
-    <!-- New Page -->
-    <div class="main-layout gifpage">
-        <header class="Nav-bar-bg main-layout">
-            <img width="200" height="50" src="./img/logo.png" alt="">
-            <ul class="Text-Style-4">
-                <li><a onclick="displayGallery()">gallery</a></li>
-                <li>about</li>
-            </ul>
-        </header>
-
-        <main class=main-layout>
-            <div class="canvas-container">
-                <canvas class=canva width="1100" height="700" onmousedown="getLine(event);toggleDraw(event)"
+        </section>
+    </main>
+    <main class="main2 main-layout center flex">
+        <section class="paint flex main2">
+            <div class="canvas-container paint main2">
+                <canvas class="canva main2 " width="1100" height="700" onmousedown="getLine(event);toggleDraw(event)"
                     onmouseup="toggleDraw(event)" onmousemove="rePosition(event)"></canvas>
             </div>
-            <div class='menu'>
-                <form class="button-grid">
+            <div class="menu paint main2">
+                <form class="button-grid main2 ">
                     <input class="Rounded-Rectangle-4 clear write" type="text" placeholder="write here"
                         oninput="setTxt(this.value);updateInput()"></input>
                     <div class="change-line-btn">
@@ -106,16 +93,16 @@
                     <a class="save btn" onclick="saveMemes()">Save</a>
                     <a href=# class="download btn" onclick="downloadImg(this)" download="mygif.jpg">Download</a>
                 </form>
-
             </div>
-        </main>
+        </section>
+    </main>
 
-        <footer class="main-layout">
-            <img src="./icons/linkedin-logo.png" alt="">
-            <img src="./icons/facebook-logo.png" alt="">
-            <img src="./icons/github-logo.png" alt="">
-        </footer>
-    </div>
+    <footer class="main-layout">
+        <img src="./icons/linkedin-logo.png" alt="">
+        <img src="./icons/facebook-logo.png" alt="">
+        <img src="./icons/github-logo.png" alt="">
+    </footer>
+
 </body>
 <script src=" js/controller.js"></script>
 <script src=" js/storage-service.js"></script>
