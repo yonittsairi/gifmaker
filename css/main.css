@@ -587,6 +587,9 @@ form>div>img {
     :root {
         --canva-width: var(--canva-height)
     }
+    .gifpage {
+        margin-top: 40px;
+    }
     .Nav-bar-bg {
         position: fixed;
         top: 0;
@@ -648,5 +651,40 @@ form>div>img {
     }
     main {
         padding-top: 70px;
+    }
+}
+
+@media (max-width: 770px) {
+    .grid {
+        grid-template-rows: repeat(auto-fill, 400px);
+        grid-template-columns: repeat(1, 400px);
+    }
+    .gifpage {
+        margin-top: 40px;
+    }
+    .grid>img {
+        height: 400px;
+        width: 400px;
+        visibility: inherit;
+    }
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-rows: repeat(auto-fill, 250px);
+        grid-template-columns: repeat(1, 250px);
+    }
+    .grid>img {
+        height: 250px;
+        width: 250px;
+        visibility: inherit;
+    }
+    .canvas-container {
+        width: 330px;
+        height: 330px;
+    }
+    .canva {
+        width: 330px;
+        height: 330px;
     }
 }

@@ -112,7 +112,6 @@ function filterGallery(keyword) {
 }
 
 function filterGallerybyTyping(keyword) {
-    debugger
     var trues = gImgs.filter(key => (key.keywords.find(key => { return key.substring(0, keyword.length) === keyword })))
     createGallery(trues)
 }
