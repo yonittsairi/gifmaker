@@ -49,7 +49,8 @@
                     onmouseup="mouseUp(event)" onmousemove="rePosition(event)"></canvas>
             </div>
             <div class="menu paint main2">
-                <form class="button-grid main2 ">
+                <form class="button-grid main2" action="" method="POST" enctype="multipart/form-data"
+                    onsubmit="uploadImg(this, event)">
                     <input class="Rounded-Rectangle-4 clear write" type="text" placeholder="write here"
                         oninput="setTxt(this.value);updateInput(event)"></input>
                     <div class="change-line-btn">
@@ -93,9 +94,11 @@
                         <input class="color-btn hide" onchange="setBcg(this.value)" type="color">
                         <img src="./icons/paint-board-and-brush.png" alt="">
                     </div>
-                    <a class="share btn" onclick="copy()">Share</a>
-                    <a class="save btn" onclick="save()">Save</a>
+                    <a class="save btn" onclick="save()" type="submit">Save</a>
                     <a href=# class="download btn" onclick="downloadImg(this)" download="mygif.jpg">Download</a>
+                    <input name="img" id="imgData" type="hidden" />
+                    <button class="share btn" type="submit">Publish</button>
+                    <div class="share-container"></div>
                 </form>
             </div>
         </section>
