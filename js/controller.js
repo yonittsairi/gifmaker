@@ -15,9 +15,10 @@ var gAlign = 'center';
 var gClick = 0;
 var gRectExist = false;
 var gClickedLine;
-var gDrawing = false;
+var isDrawing = false;
 const KEY = 'memes';
-
+var gX;
+var gY;
 
 
 
@@ -35,11 +36,9 @@ function init() {
     gCtx = gCanvas.getContext('2d')
 }
 
-function toggleDraw(ev) {
-    console.log('toggel');
-    gDrawing = gDrawing ? false : true;
-    drawAllTxt()
-}
+
+
+
 
 // function displayMemeGallery() {
 //     var elgallery = document.querySelector('.gallery meme')
@@ -63,24 +62,19 @@ function displayGallery() {
     elgallery.style.display = 'block'
     elGrid.style.display = 'grid'
     elgallery.style.opacity = '1'
+    var elSearch = document.querySelector('.search-bar')
+    elSearch.style.display = 'flex'
     var elGif = document.querySelector('.paint')
     var elMain2 = document.querySelector('.main2')
     elGif.style.visibility = 'hidden'
     elMain2.style.visibility = 'hidden'
+    // elMain2.style.opacity = 0
     elMain2.classList.add('height')
     // elGif.style.display = 'none'
-
+    renderKeyWords()
 }
 
-function findIdxById(id) {
-    var idx = 0
-    var lines = gMeme.lines
-    if (gClickedLine && lines.length !== 0) {
-        var currId = id
-        idx = lines.findIndex(line => line.id === currId)
-    }
-    return idx
-}
+
 
 function displayCanvas(el, id) {
     var elGif = document.querySelector('.gifpage')
@@ -98,47 +92,80 @@ function displayCanvas(el, id) {
     var elMain2 = document.querySelector('.main2')
     elMain2.style.visibility = 'visible'
     elMain2.classList.remove('height')
+    // elMain2.style.opacity = 1
     var elgalleryCon = document.querySelector('.gallery-container')
     elgalleryCon.style.display = 'none'
+    var elSearch = document.querySelector('.search-bar')
+    elSearch.style.display = 'none'
     // elGif.style.display = 'block'
     // elGif.style.display = 'flex'
 
 }
 
+function renderKeyWords() {
+    var keyWordsArray = Object.keys(gKeywords)
+    var strHtmls = keyWordsArray.map(key =>
+        `<div class="${key}" onclick="filterGallery('${key}')">${key}</div>`)
+    var searchWords = document.querySelector('.search-words')
+    searchWords.innerHTML = strHtmls.join('')
+}
+
+function toggleDraw(ev) {
+    isDrawing = true;
+    gX = ev.offsetX;
+    gY = ev.offsetY;
+
+}
+
+
 function rePosition(ev) {
-    if (!gClickedLine) return
-    if (!gDrawing) return
-    if (gDrawing && gClickedLine) {
-        var idx = gMeme.selectedLineIdx
+    if (isDrawing === true) {
         var { offsetX, offsetY } = ev;
-        drawRect(gClickedLine.x, gClickedLine.y)
+        gX = ev.offsetX;
+        gY = ev.offsetY;
         if (offsetX < gtxtWidth || offsetX > gCanvas.width - gtxtWidth || offsetY < gFontSize || offsetY > gCanvas.height - gFontSize) return
+        // drawRect(offsetX, offsetY)
+    }
+
+}
+function mouseUp(ev) {
+    if (isDrawing === true) {
+        var { offsetX, offsetY } = ev;
+        var idx = gMeme.selectedLineIdx
         gClickedLine.x = offsetX
         gClickedLine.y = offsetY
+        gClickedLine.rectX = gClickedLine.x - (gtxtWidth / 2) + 5
+        gClickedLine.rectY = gClickedLine.y - gFontSize + 10
         var lines = gMeme.lines
         lines.splice(idx, 1)
         lines.push(gClickedLine)
-        toggleDraw(ev)
-        drawAllTxt()
-
+        gX = 0;
+        gY = 0;
+        isDrawing = false;
         gClickedLine = 0
+        drawAllTxt()
     }
-    else return
 }
 
+// function drawLine(context, x1, y1, x2, y2) {
+//     context.beginPath();
+//     context.strokeStyle = 'black';
+//     context.lineWidth = 1;
+//     context.moveTo(x1, y1);
+//     context.lineTo(x2, y2);
+//     context.stroke();
+//     context.closePath();
+// }
+
 function getLine(ev) {
-    debugger
     var { offsetX, offsetY } = ev;
-    console.log(offsetX, offsetY);
     if (gdraw === -1) return
     var lines = gMeme.lines
-
     gClickedLine = lines.find(line => {
-        return offsetX >= line.x && offsetX <= (line.x * 1.286 + line.rectWidth)
-            && offsetY >= (line.y - line.size) && offsetY <= (line.y + line.size)
+        return (offsetX >= line.rectX && offsetX <= (line.rectX * 1.286 + line.rectWidth)
+            && offsetY >= (line.rectY - line.size) && offsetY <= (line.rectY + line.size))
 
     })
-    console.log(gClickedLine);
     var currId = gClickedLine.id
     var idx = findIdxById(currId)
     console.log(idx);
@@ -212,11 +239,12 @@ function drawText(text, x, y) {
     gtxtWidth = gCtx.measureText(text).width
 
 }
+
 function drawRect(x, y) {
     gCtx.beginPath()
     gCtx.strokeStyle = 'black'
     gCtx.shadowBlur = 0;
-    if (gdraw > 0) gtxtWidth = gClickedLine.rectWidth
+    if (gdraw > 0 && gClickedLine) gtxtWidth = gClickedLine.rectWidth
     gCtx.rect(x - 10, y - 10, gtxtWidth + 15, gFontSize * 1.286) // x,y,widht,height
     gCtx.stroke()
 }
@@ -236,7 +264,6 @@ function draw() {
         createLine((gCanvas.width / 2), 100, width, rectX, rectY)
         drawAllTxt()
         drawRect(rectX, rectY)
-        gRectExist = true
     }
     else if (gdraw === 1) {
         drawText(gTxt, (gCanvas.width / 2), gCanvas.height - 100)
@@ -274,11 +301,7 @@ function getSrc(el) {
     gCurrImg = el
 }
 
-//T Do
-function setSearch(el) {
-    var searchWord = el.value
-    findMatch(searchWord)
-}
+//To Do
 
 function chooseLine() {
     if (gClick > gMeme.lines.length - 1) {
@@ -336,6 +359,7 @@ function resizeCanvas() {
 
 ///STYLE FUNC
 function setTxt(txt) {
+
     if (gdraw >= 0) {
         clearCanvas()
         drawAllTxt()
@@ -381,13 +405,22 @@ function downloadImg(elLink) {
     }
 
 }
+function save() {
+    saveMemes()
+}
 
-function saveMemes() {
-    var memes = loadFromStorage(KEY)
-    if (!memes || memes.length === 0) memes = gMeme
-    else memes.push(gMeme)
-    saveToStorage(KEY, memes)
-    console.log(localStorage);
+function setSearch(word) {
+    filterGallerybyTyping(word);
+
+}
+function toggleMenu() {
+    var elList = document.querySelector('ul')
+    elList.classList.toggle('visible')
+}
+function closeMenu() {
+    var elList = document.querySelector('ul')
+    elList.classList.toggle('visible')
+
 }
 
 // scale ctx.scale(2, 2);

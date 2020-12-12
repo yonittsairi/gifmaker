@@ -13,41 +13,45 @@
 </head>
 
 <body onload=init()>
-    <header class="Nav-bar-bg main-layout">
+    <header class="Nav-bar-bg main-layout" onmouseout=closeMenu()>
         <img width="200" height="50" src="./img/logo.png" alt="">
-        <ul class="Text-Style-4">
-            <li><a onclick="init()">gallery</a></li>
+        <a class="hamburger" onclick="toggleMenu()">☰</a>
+        <ul class="Text-Style-4 visible">
+            <li onclick="init()"><a>gallery</a></li>
             <li><a>about</a></li>
             <!-- <li onclick="displayGallery()">memes</li> -->
         </ul>
     </header>
-    <div class="search-bar flex main-layout">
-        <div class="search-item flex">
-            <input class="search" type="text" placeholder="search here" onchange="setSearch(this)"></input>
-            <img class="glass" src="./icons/search-icon.png" alt="">
-        </div>
-        <div>search</div>
-    </div>
-
-    <main class="main-layout gifpage">
-        <section class="gallery main-layout flex">
-
-            <div class="gallery-container main-layout">
-                <div class="grid center">
-                </div>
+    <div class="column">
+        <div class="search-bar flex main-layout">
+            <div class="search-item flex">
+                <input class="search" type="text" placeholder="search here" oninput="setSearch(this.value)"></input>
+                <img class="glass" src="./icons/search-icon.png" alt="">
             </div>
-        </section>
-    </main>
+            <div class="search-words">
+            </div>
+        </div>
+
+        <main class="main-layout gifpage">
+            <section class="gallery main-layout flex">
+
+                <div class="gallery-container main-layout">
+                    <div class="grid center">
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
     <main class="main2 main-layout center flex">
         <section class="paint flex main2">
             <div class="canvas-container paint main2">
                 <canvas class="canva main2 " width="1100" height="700" onmousedown="getLine(event);toggleDraw(event)"
-                    onmouseup="toggleDraw(event)" onmousemove="rePosition(event)"></canvas>
+                    onmouseup="mouseUp(event)" onmousemove="rePosition(event)"></canvas>
             </div>
             <div class="menu paint main2">
                 <form class="button-grid main2 ">
                     <input class="Rounded-Rectangle-4 clear write" type="text" placeholder="write here"
-                        oninput="setTxt(this.value);updateInput()"></input>
+                        oninput="setTxt(this.value);updateInput(event)"></input>
                     <div class="change-line-btn">
                         <img src="./icons/up-and-down-opposite-double-arrows-side-by-side.png" alt=""
                             onclick="chooseLine()">
@@ -90,7 +94,7 @@
                         <img src="./icons/paint-board-and-brush.png" alt="">
                     </div>
                     <a class="share btn" onclick="copy()">Share</a>
-                    <a class="save btn" onclick="saveMemes()">Save</a>
+                    <a class="save btn" onclick="save()">Save</a>
                     <a href=# class="download btn" onclick="downloadImg(this)" download="mygif.jpg">Download</a>
                 </form>
             </div>
