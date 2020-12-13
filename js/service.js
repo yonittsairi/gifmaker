@@ -57,6 +57,7 @@ function createLine(x, y, width, rectX, rectY) {
         y,
         rectX: rectX,
         rectY: rectY,
+        url: gCurrImg
     }
     gMeme.lines.push(line)
     gMeme.lineCount = (gMeme.lines).length

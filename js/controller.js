@@ -13,7 +13,7 @@ var isDrawing = false;
 var gX;
 var gY;
 var gDiff = 0
-
+var refresh
 var gBcg = '#fff';
 var gStrokeColor = 'black';
 var gtxtWidth;
@@ -62,9 +62,15 @@ function displayCanvas(el, id) {
     var elGif = document.querySelector('.gifpage')
     elGif.style.visibility = "visible"
     getSrc(el)
-    if (!gCurrImg.includes("data:")) drawImg(gCurrImg)
-    if (gCurrImg.includes("data:")) drawImgFromLink()
-    saveMeme(id)
+    if (!gCurrImg.includes("data:")) { drawImg(gCurrImg), saveMeme(id) }
+    if (gCurrImg.includes("data:")) {
+        debugger
+        let memesArray = loadFromStorage(KEY);
+        gMeme = memesArray.find(meme => meme.urlData === gCurrImg)
+        gCurrImg = gMeme.url
+        drawImg(gCurrImg)
+        drawAllTxt()
+    }
     var elgallery = document.querySelector('.gallery')
     var elGrid = document.querySelector('.grid')
     elgallery.style.opacity = '0'
@@ -285,6 +291,9 @@ function draw() {
         createLine((gCanvas.width / 2), 100, width, rectX, rectY)
         drawAllTxt()
         drawRect(rectX, rectY)
+        refreshPge()
+
+
     }
     else if (gdraw === 1) {
         drawText(gTxt, (gCanvas.width / 2), gCanvas.height - 100)
@@ -292,8 +301,9 @@ function draw() {
         let rectY = gCanvas.height - gFontSize - 100
         let width = gtxtWidth
         createLine((gCanvas.width / 2), gCanvas.height - 100, width, rectX, rectY)
-        drawAllTxt()
         drawRect(rectX, rectY)
+        refreshPge()
+
     }
     else {
         drawText(gTxt, (gCanvas.width / 2), (gCanvas.height / 2))
@@ -303,10 +313,15 @@ function draw() {
         createLine((gCanvas.width / 2), (gCanvas.height / 2), width, rectX, rectY)
         drawAllTxt()
         drawRect(rectX, rectY)
+        refreshPge()
+
 
     }
+    clearInput()
 
 }
+
+
 
 function clearCanvas() {
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
@@ -315,6 +330,8 @@ function clearCanvas() {
 function clearInput() {
     var elInput = document.querySelector('.clear')
     elInput.value = ''
+    gClickedLine = 0
+
 }
 
 function getSrc(el) {
@@ -366,9 +383,10 @@ function downloadImg(elLink) {
 
 }
 function save() {
+    drawAllTxt()
     var canvas = document.querySelector('.canva')
     var imgContent = canvas.toDataURL("image/jpg", 1.0)
-    saveMemes(imgContent)
+    setTimeout(saveMemes(imgContent), 1000)
 }
 
 function setSearch(word) {
@@ -485,4 +503,3 @@ function alignCtr() {
     if (gClickedLine) gClickedLine.align = gAlign
     gDiff = 0
 }
-
