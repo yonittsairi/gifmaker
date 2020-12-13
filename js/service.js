@@ -2,9 +2,9 @@
 
 var gMeme = {}
 var gMemesData;
+const KEY = 'memes';
 
-
-var gKeywords = { 'kids': 0, 'president': 0, 'people': 0, 'celebs': 0, 'animals': 0, 'movie': 0 }
+var gKeywords = { 'kids': 1, 'president': 1, 'people': 2, 'celebs': 1, 'animals': 4, 'movie': 0 }
 var gImgs = [
     { id: 1, url: '1.jpg', keywords: ['president', 'people', 'celebs'] },
     { id: 2, url: '2.jpg', keywords: ['animals'] },
@@ -60,13 +60,19 @@ function createLine(x, y, width, rectX, rectY) {
     }
     gMeme.lines.push(line)
     gMeme.lineCount = (gMeme.lines).length
-    console.log(gMeme);
+
 }
 
-function changeLine(idx) {
+function changeLine() {
+    var idx = gMeme.selectedLineIdx
     if (idx === -1 || gdraw === -1) return
     var line = gMeme.lines[idx]
     line.txt = gTxt
+    line.size = gFontSize
+    line.fontFamily = gFontFamily
+    line.color = gBcg
+    line.stroke = gStrokeColor
+    line.align = gAlign
     console.log(line);
 }
 
@@ -122,23 +128,38 @@ function saveMeme(id) {
         selectedImgId: id,
         selectedLineIdx: 0,
         lines: 0,
+        urlData: 0,
     }
     gMeme = meme
 
 }
 
 
-// if i have ty=ime use this to draw Meme Gallery
-function copy() {
-    if (!gMemesData) gMemesData = []
-    var imgData = gCtx.getImageData(0, 0, gCanvas.width, gCanvas.height);
-    gMemesData.push(imgData)
-    // gCtx.putImageData(imgData, 0, 0);
-}
 
-function saveMemes() {
-    var memes = [loadFromStorage(KEY)]
-    if (!memes || memes.length === 0) memes = gMeme
+
+function saveMemes(imgData) {
+    gMeme.urlData = imgData
+    gMeme.id = _makeId()
+    var memes = loadFromStorage(KEY)
+    if (!memes || memes.length === 0) memes = [gMeme]
     memes.push(gMeme)
     saveToStorage(KEY, memes)
 }
+
+function doUploadImg(elForm, onSuccess) {
+    var formData = new FormData(elForm);
+    fetch('http://ca-upload.com/here/upload.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(function (res) {
+            return res.text()
+        })
+        .then(onSuccess)
+        .catch(function (err) {
+            console.error(err)
+        })
+}
+
+
+

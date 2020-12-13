@@ -18,6 +18,7 @@
         <a class="hamburger" onclick="toggleMenu()">☰</a>
         <ul class="Text-Style-4 visible">
             <li onclick="init()"><a>gallery</a></li>
+            <li onclick="displayMemesGallery()"><a>Memes</a></li>
             <li><a>about</a></li>
             <!-- <li onclick="displayGallery()">memes</li> -->
         </ul>
@@ -45,8 +46,11 @@
     <main class="main2 main-layout center flex">
         <section class="paint flex main2">
             <div class="canvas-container paint main2">
-                <canvas class="canva main2 " width="1100" height="700" onmousedown="getLine(event);toggleDraw(event)"
-                    onmouseup="mouseUp(event)" onmousemove="rePosition(event)"></canvas>
+                <canvas class="canva main2 " width="1100" height="700" onclick="getLine(event)"
+                    onmousedown="getLine(event);toggleDraw(event)" onmouseup="mouseUp(event)"
+                    onmousemove="rePosition(event)" ontouchstart="getLine(event);toggleDraw(event)"
+                    ontouchend="rePosition(event)">
+                </canvas>
             </div>
             <div class="menu paint main2">
                 <form class="button-grid main2" action="" method="POST" enctype="multipart/form-data"
@@ -86,12 +90,12 @@
 
                     </select>
                     <div class="text-shadow-btn">
-                        <input class="text-shadow-btn hide" onchange="setClr(this.value)" type="color">
+                        <input class="text-shadow-btn hide" oninput="setClr(this.value)" type="color">
                         <img src="./icons/text stroke.png" alt="">
                     </div>
 
                     <div class="color-btn">
-                        <input class="color-btn hide" onchange="setBcg(this.value)" type="color">
+                        <input class="color-btn hide" oninput="setBcg(this.value)" type="color">
                         <img src="./icons/paint-board-and-brush.png" alt="">
                     </div>
                     <a class="save btn" onclick="save()" type="submit">Save</a>
@@ -105,14 +109,15 @@
     </main>
 
     <footer class="main-layout">
-        <img src="./icons/linkedin-logo.png" alt="">
+        <!-- <img src="./icons/linkedin-logo.png" alt="">
         <img src="./icons/facebook-logo.png" alt="">
-        <img src="./icons/github-logo.png" alt="">
+        <img src="./icons/github-logo.png" alt=""> -->
     </footer>
 
 </body>
 <script src=" js/controller.js"></script>
 <script src=" js/storage-service.js"></script>
+<script src=" js/style-controller.js"></script>
 <script src=" js/service.js"></script>
 <script src="lib/hammerjs.js"></script>
 
