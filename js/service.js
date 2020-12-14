@@ -47,7 +47,7 @@ function createLine(x, y, width, rectX, rectY) {
     var line = {
         id: _makeId(),
         txt: gTxt,
-        size: gFontSize,
+        size: 60, // do for all properties (?)
         align: gAlign,
         color: gBcg,
         stroke: gStrokeColor,
@@ -65,15 +65,16 @@ function createLine(x, y, width, rectX, rectY) {
 }
 
 function changeLine() {
-    var idx = gMeme.selectedLineIdx
+    const idx = gMeme.selectedLineIdx
     if (idx === -1 || gdraw === -1) return
-    var line = gMeme.lines[idx]
+    const line = gMeme.lines[idx]
     line.txt = gTxt
     line.size = gFontSize
     line.fontFamily = gFontFamily
     line.color = gBcg
     line.stroke = gStrokeColor
     line.align = gAlign
+
     console.log(line);
 }
 
@@ -119,7 +120,7 @@ function filterGallery(keyword) {
 }
 
 function filterGallerybyTyping(keyword) {
-    var trues = gImgs.filter(key => (key.keywords.find(key => { return key.substring(0, keyword.length) === keyword })))
+    var trues = gImgs.filter(img => (img.keywords.some(key => { return key.includes(keyword) })))
     createGallery(trues)
 }
 

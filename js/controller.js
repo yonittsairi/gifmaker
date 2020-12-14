@@ -277,7 +277,7 @@ function drawRectSelected(gClickedLine) {
     }
 }
 
-function draw() {
+function onDraw() {
     clearInput()
     if (!gTxt) return
     if (gTxt.length > 20) return alert('print only 15 letters')
@@ -291,7 +291,7 @@ function draw() {
         createLine((gCanvas.width / 2), 100, width, rectX, rectY)
         drawAllTxt()
         drawRect(rectX, rectY)
-        refreshPge()
+        // refreshPge()
 
 
     }
@@ -302,7 +302,7 @@ function draw() {
         let width = gtxtWidth
         createLine((gCanvas.width / 2), gCanvas.height - 100, width, rectX, rectY)
         drawRect(rectX, rectY)
-        refreshPge()
+
 
     }
     else {
@@ -313,7 +313,7 @@ function draw() {
         createLine((gCanvas.width / 2), (gCanvas.height / 2), width, rectX, rectY)
         drawAllTxt()
         drawRect(rectX, rectY)
-        refreshPge()
+
 
 
     }
